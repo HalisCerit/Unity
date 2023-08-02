@@ -7,8 +7,10 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] int thrustForce = 1;
     [SerializeField] int rotateForce = 100;
+    [SerializeField] AudioClip mainEngineSound;
     //[SerializeField] int rightAndLeftEngine = 300;
     Rigidbody rb;
+    AudioSource aS;
 
 
     // Start is called before the first frame update
@@ -16,6 +18,7 @@ public class Movement : MonoBehaviour
     {
        
         rb=GetComponent<Rigidbody>();
+        aS=GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,9 +33,16 @@ public class Movement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
         {
             rb.AddRelativeForce(0,thrustForce*Time.deltaTime,0);
+            if (aS.isPlaying == false) 
+            {
+                aS.PlayOneShot(mainEngineSound);
+            }
+           
             //rb.AddRelativeForce(Vector3.up); //bu kodda kullanılabilir y kısmı vector3.up olarak kısaltılır
             //Debug.Log("Thrusting");
         }
+        else 
+        { if (aS.isPlaying == true) { aS.Stop(); } }
     }
     void Rotation() 
     {
